@@ -1,0 +1,43 @@
+{
+  "api": {
+    "apiPrincipal": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "mainRouterFunction"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
+  "function": {
+    "mainRouterFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_mainRouterFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "mainRouterFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_mainRouterFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "mainRouterFunction"
+        }
+      ]
+    }
+  }
+}

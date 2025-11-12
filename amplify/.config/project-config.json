@@ -1,18 +1,17 @@
 {
   "whyContinueWithGen1": "Prefer not to answer",
-  "projectName": "DiariodeClasse",
+  "projectName": "school-management-system",
   "version": "3.1",
   "frontend": "javascript",
   "javascript": {
-    "framework": "none",
+    "framework": "react",
     "config": {
-      "SourceDir": "src",
-      "DistributionDir": "dist",
-      "BuildCommand": "npm run-script build",
-      "StartCommand": "npm run-script start"
+      "SourceDir": "/",
+      "DistributionDir": ".next",
+      "BuildCommand": "npm run build",
+      "StartCommand": "npm run start"
     }
   },
-  "providers": [
-    "awscloudformation"
-  ]
+  "providers": ["awscloudformation"],
+  "AmplifyAppId": "d20gl14hl67nr5"
 }

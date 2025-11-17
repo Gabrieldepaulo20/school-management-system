@@ -15,6 +15,12 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "supabaseUrl": {
+      "Type": "String"
+    },
+    "supabaseServiceRoleKey": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -69,6 +75,12 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "SUPABASE_URL": {
+              "Ref": "supabaseUrl"
+            },
+            "SUPABASE_SERVICE_ROLE_KEY": {
+              "Ref": "supabaseServiceRoleKey"
             }
           }
         },

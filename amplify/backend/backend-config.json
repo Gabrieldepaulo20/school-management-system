@@ -15,6 +15,32 @@
       "service": "API Gateway"
     }
   },
+  "auth": {
+    "schoolmanagementsystem864b1bcd": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
+    }
+  },
   "function": {
     "mainRouterFunction": {
       "build": true,
@@ -38,6 +64,29 @@
           "resourceName": "mainRouterFunction"
         }
       ]
+    },
+    "AMPLIFY_function_mainRouterFunction_supabaseServiceRoleKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "mainRouterFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_mainRouterFunction_supabaseUrl": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "mainRouterFunction"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "avaliacoesStorage": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
     }
   }
 }

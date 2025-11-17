@@ -1,0 +1,13 @@
+{
+  "resourceName": "avaliacoesStorage",
+  "policyUUID": "59cc275b",
+  "bucketName": "diario-avaliacoes",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

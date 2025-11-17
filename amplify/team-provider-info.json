@@ -15,11 +15,19 @@
       "function": {
         "mainRouterFunction": {
           "deploymentBucketName": "amplify-diariodeclasse-dev-b5035-deployment",
-          "s3Key": "amplify-builds/mainRouterFunction-6a6e7554397751446341-build.zip"
+          "s3Key": "amplify-builds/mainRouterFunction-62394e31683055336266-build.zip",
+          "supabaseUrl": "https://ggfcsbaqkafrtooxffrb.supabase.co",
+          "supabaseServiceRoleKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdnZmNzYmFxa2FmcnRvb3hmZnJiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTYwODY5NiwiZXhwIjoyMDc3MTg0Njk2fQ.nUI7FATESBnLHJY5RGHbzNkwErPJbL1WcIw6EeQBOiA"
         }
       },
       "api": {
         "apiPrincipal": {}
+      },
+      "auth": {
+        "schoolmanagementsystem864b1bcd": {}
+      },
+      "storage": {
+        "avaliacoesStorage": {}
       }
     }
   }

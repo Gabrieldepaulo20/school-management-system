@@ -2,6 +2,11 @@
 
 const { inserirAluno } = require('./insert/inserir_aluno');
 const { inserirAvaliacao } = require('./insert/inserir_avaliacao');
+const { inserirPlanoDeEnsino } = require('./insert/inserir_plano_de_ensino');
+const { inserirConteudosProgramaticos } = require('./insert/inserir_conteudos_programaticos');
+const { inserirConteudosDoPlano } = require('./insert/inserir_conteudos_do_plano');
+const { inserirPresencas } = require('./insert/inserir_presencas');
+const { inserirRegistrosAulas } = require('./insert/inserir_registros_aulas');
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -23,33 +28,40 @@ exports.handler = async (event) => {
       };
     }
 
-    // por enquanto vamos testar só essa ação
-    if (acao === 'inserir_aluno') {
-      console.log('🔧 Router: Chamando inserirAluno com params:', params);
-      const resultado = await inserirAluno(params); // params = { usuarioId, turmaId, responsavelId, matricula }
-      console.log('✅ Supabase retorno inserirAluno:', resultado);
+    // mapa de ações para funções handler
+    const actionsMap = {
+      inserir_aluno: inserirAluno,
+      inserir_avaliacao: inserirAvaliacao,
+      inserir_plano_de_ensino: inserirPlanoDeEnsino,
+      inserir_conteudos_programaticos: inserirConteudosProgramaticos,
+      inserir_conteudos_do_plano: inserirConteudosDoPlano,
+      inserir_presencas: inserirPresencas,
+      inserir_registros_aulas: inserirRegistrosAulas,
+    };
 
+    if (!acao || typeof acao !== 'string') {
       return {
-        statusCode: 201,
-        body: JSON.stringify(resultado),
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Campo "acao" é obrigatório e deve ser uma string.' }),
       };
     }
 
-    if (acao === 'inserir_avaliacao') {
-      console.log('🔧 Router: Chamando inserirAvaliacao com params:', params);
-      const resultado = await inserirAvaliacao(params);
-      console.log('✅ Supabase retorno inserirAvaliacao:', resultado);
+    const handlerFunc = actionsMap[acao];
 
+    if (!handlerFunc) {
       return {
-        statusCode: 201,
-        body: JSON.stringify(resultado),
+        statusCode: 400,
+        body: JSON.stringify({ error: `Ação inválida ou não suportada: ${acao}` }),
       };
     }
 
-    // se não cair em nenhuma ação conhecida:
+    console.log(`🔧 Router: Chamando handler para ação "${acao}" com params:`, params);
+    const resultado = await handlerFunc(params);
+    console.log(`✅ Retorno da ação "${acao}":`, resultado);
+
     return {
-      statusCode: 400,
-      body: JSON.stringify({ error: `Ação inválida ou não suportada: ${acao}` }),
+      statusCode: 201,
+      body: JSON.stringify(resultado),
     };
 
   } catch (error) {

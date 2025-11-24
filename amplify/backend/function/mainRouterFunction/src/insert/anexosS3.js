@@ -12,12 +12,7 @@ const S3_REGION = process.env.AWS_REGION || "us-east-1";
 
 const s3Client = new S3Client({ region: S3_REGION });
 
-/**
- * Deixa o texto simples para usar na URL:
- * - tudo minúsculo
- * - espaços viram "-"
- * - remove acentos/caracteres estranhos
- */
+
 function slugify(text) {
   if (!text) return "";
   return text
@@ -29,12 +24,6 @@ function slugify(text) {
     .replace(/\s+/g, "-"); // espaços -> "-"
 }
 
-/**
- * Normaliza a data para "yyyy-mm-dd".
- * Aceita:
- * - "dd/mm/yyyy"
- * - "yyyy-mm-dd"
- */
 function normalizarDataSimples(data) {
   if (!data) return null;
 
@@ -52,30 +41,7 @@ function normalizarDataSimples(data) {
   return null;
 }
 
-/**
- * Upload genérico de anexo para o S3.
- *
- * Espera um objeto "data" com:
- * {
- *   prefixo: "avaliacoes/" | "plano_de_aula/" | "qualquer-outra-coisa/",
- *   turmaId: number | string,
- *   turmaNome: string,
- *   professorNome: string,
- *   dataReferencia: string,   // ex: "10/03/2025" ou "2025-03-10"
- *   nomeArquivo: string,      // ex: "prova-espanhol.pdf"
- *   tipo: string,             // mime type, ex: "application/pdf"
- *   conteudoBase64: string    // arquivo em base64
- * }
- *
- * A key no S3 ficará neste padrão:
- *   {prefixo}{turmaId-turmaSlug}/{professorSlug}/{data}-timestamp-nomeArquivo
- *
- * Exemplo de key:
- *   avaliacoes/5-turma-a/professor-joao/2025-03-10-1731723000000-prova-espanhol.pdf
- *
- * Retorna:
- *   { url, key }
- */
+
 async function uploadAnexoGenerico(data) {
   if (!data || typeof data !== "object") {
     throw new Error("Parâmetro 'data' inválido para upload de anexo.");

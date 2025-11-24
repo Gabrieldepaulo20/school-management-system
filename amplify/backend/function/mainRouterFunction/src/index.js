@@ -7,6 +7,15 @@ const { inserirConteudosProgramaticos } = require('./insert/inserir_conteudos_pr
 const { inserirConteudosDoPlano } = require('./insert/inserir_conteudos_do_plano');
 const { inserirPresencas } = require('./insert/inserir_presencas');
 const { inserirRegistrosAulas } = require('./insert/inserir_registros_aulas');
+const { getAlunosTurmaCompleto } = require('./get/get_alunos_turma_completo');
+const { getAlunosTurma } = require('./get/get_alunos_turma');
+const { getAulasProfessorDetalhadas } = require('./get/get_aulas_professor_detalhadas');
+const { getAvaliacoes } = require('./get/get_avaliacoes');
+const { getConteudosProg } = require('./get/get_conteudos_prog');
+const { getDashboardProfessor } = require('./get/get_dashboard_professor');
+const { getPlanosEnsino } = require('./get/get_planos_ensino');
+const { getRegistrosAulas } = require('./get/get_registros_aulas');
+const { getTurmas } = require('./get/get_turmas');
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -30,6 +39,7 @@ exports.handler = async (event) => {
 
     // mapa de ações para funções handler
     const actionsMap = {
+      // INSERTS
       inserir_aluno: inserirAluno,
       inserir_avaliacao: inserirAvaliacao,
       inserir_plano_de_ensino: inserirPlanoDeEnsino,
@@ -37,6 +47,17 @@ exports.handler = async (event) => {
       inserir_conteudos_do_plano: inserirConteudosDoPlano,
       inserir_presencas: inserirPresencas,
       inserir_registros_aulas: inserirRegistrosAulas,
+
+      // GETS
+      get_alunos_turma_completo: getAlunosTurmaCompleto,
+      get_alunos_turma: getAlunosTurma,
+      get_aulas_professor_detalhadas: getAulasProfessorDetalhadas,
+      get_avaliacoes: getAvaliacoes,
+      get_conteudos_prog: getConteudosProg,
+      get_dashboard_professor: getDashboardProfessor,
+      get_planos_ensino: getPlanosEnsino,
+      get_registros_aulas: getRegistrosAulas,
+      get_turmas: getTurmas,
     };
 
     if (!acao || typeof acao !== 'string') {
@@ -60,7 +81,7 @@ exports.handler = async (event) => {
     console.log(`✅ Retorno da ação "${acao}":`, resultado);
 
     return {
-      statusCode: 201,
+      statusCode: 200,
       body: JSON.stringify(resultado),
     };
 

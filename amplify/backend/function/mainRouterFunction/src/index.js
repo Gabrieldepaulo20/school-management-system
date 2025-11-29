@@ -66,6 +66,22 @@ exports.handler = async (event) => {
       };
     }
 
+    // rota GET para aulas_professor_detalhadas
+    if (httpMethod === 'GET' && path && path.endsWith('/aulas-professor-detalhadas')) {
+      const qs = queryStringParameters || {};
+      
+      console.log('🔧 Router GET: Chamando getAulasProfessorDetalhadas com params de query:', qs);
+      const resultado = await getAulasProfessorDetalhadas(qs);
+      console.log('✅ Retorno GET get_aulas_professor_detalhadas:', resultado);
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(resultado),
+      };
+    }
+
     // --------------------
     // FLUXO ORIGINAL (POST)
     // --------------------

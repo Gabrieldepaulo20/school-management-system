@@ -26,3 +26,5 @@ async function getAulasProfessorDetalhadas(data){
     
     return retorno;
 }
+
+module.exports = { getAulasProfessorDetalhadas };

@@ -24,6 +24,8 @@ function converterParaTimestamp(dataStr) {
 }
 
 async function inserirPresencas(body) {
+  console.log("📥 inserirPresencas recebeu body:", body);
+
   const { data, presente, fkAlunos, fkAulas } = body;
 
   if (!data || !fkAlunos || !fkAulas) {
@@ -57,7 +59,11 @@ async function inserirPresencas(body) {
     p_fk_aulas: Number(fkAulas)
   };
 
+  console.log("🔧 Chamando RPC inserir_presencas com payload:", payload);
+
   const { data: retorno, error } = await supabase.rpc("inserir_presencas", payload);
+
+  console.log("📤 Retorno do Supabase RPC inserir_presencas:", { retorno, error });
 
   if (error) throw error;
 

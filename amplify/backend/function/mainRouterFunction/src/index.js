@@ -185,8 +185,20 @@ exports.handler = async (event) => {
     // --------------------
     // FLUXO ORIGINAL (POST)
     // --------------------
-    const body = event.body ? JSON.parse(event.body) : {};
-    const { acao, params } = body;
+    // Body bruto vindo do API Gateway
+    const rawBody = event.body ? JSON.parse(event.body) : {};
+
+    // Suporta dois formatos:
+    // 1) { acao: '...', params: { ... } }
+    // 2) { acao: '...', ...camposDiretos }
+    const acao = rawBody.acao;
+    const params = rawBody.params && typeof rawBody.params === 'object'
+      ? rawBody.params
+      : rawBody;
+
+    console.log('📦 Body recebido no POST:', rawBody);
+    console.log('🎯 Ação resolvida:', acao);
+    console.log('📨 Params resolvidos para handler:', params);
 
     // garantir que seja POST para o fluxo baseado em "acao"
     if (httpMethod && httpMethod !== 'POST') {

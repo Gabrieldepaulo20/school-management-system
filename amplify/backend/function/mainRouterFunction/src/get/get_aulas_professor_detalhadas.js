@@ -11,7 +11,7 @@ async function getAulasProfessorDetalhadas(data){
     
     const payload =
     {
-        p_idprofessor: Number(idProfessor)
+        p_idprofessor: idProfessor
     }
     console.log("🔧 Chamando RPC get_aulas_professor_detalhadas com params:", payload);
     

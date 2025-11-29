@@ -15,7 +15,7 @@
       "function": {
         "mainRouterFunction": {
           "deploymentBucketName": "amplify-diariodeclasse-dev-b5035-deployment",
-          "s3Key": "amplify-builds/mainRouterFunction-3142727432486647546b-build.zip",
+          "s3Key": "amplify-builds/mainRouterFunction-612b42356b2b33464a75-build.zip",
           "supabaseUrl": "https://ggfcsbaqkafrtooxffrb.supabase.co",
           "supabaseServiceRoleKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdnZmNzYmFxa2FmcnRvb3hmZnJiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTYwODY5NiwiZXhwIjoyMDc3MTg0Njk2fQ.nUI7FATESBnLHJY5RGHbzNkwErPJbL1WcIw6EeQBOiA"
         }

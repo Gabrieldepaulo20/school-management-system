@@ -49,6 +49,23 @@ exports.handler = async (event) => {
       };
     }
 
+    // ROTA GET ESPECÍFICA: /turmas?...
+    if (httpMethod === 'GET' && path && path.endsWith('/turmas')) {
+      const qs = queryStringParameters || {};
+
+      console.log('🔧 Router GET: Chamando getTurmas com params de query:', qs);
+      const resultado = await getTurmas(qs);
+      console.log('✅ Retorno GET get_turmas:', resultado);
+
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(resultado),
+      };
+    }
+
     // --------------------
     // FLUXO ORIGINAL (POST)
     // --------------------
@@ -75,7 +92,6 @@ exports.handler = async (event) => {
       inserir_registros_aulas: inserirRegistrosAulas,
 
       // GETS via POST (mantidos para compatibilidade)
-      get_alunos_turma_completo: getAlunosTurmaCompleto,
       get_alunos_turma: getAlunosTurma,
       get_aulas_professor_detalhadas: getAulasProfessorDetalhadas,
       get_avaliacoes: getAvaliacoes,
@@ -83,7 +99,6 @@ exports.handler = async (event) => {
       get_dashboard_professor: getDashboardProfessor,
       get_planos_ensino: getPlanosEnsino,
       get_registros_aulas: getRegistrosAulas,
-      get_turmas: getTurmas,
     };
 
     if (!acao || typeof acao !== 'string') {

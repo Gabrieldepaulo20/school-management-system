@@ -26,3 +26,5 @@ async function getAlunosTurma(data){
     
     return retorno;
 }
+
+module.exports = { getAlunosTurma };

@@ -17,15 +17,31 @@ const { getPlanosEnsino } = require('./get/get_planos_ensino');
 const { getRegistrosAulas } = require('./get/get_registros_aulas');
 const { getTurmas } = require('./get/get_turmas');
 
+const defaultHeaders = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
   console.log('EVENT:', JSON.stringify(event));
 
-  try {
-    const { httpMethod, path, queryStringParameters } = event;
+  const { httpMethod, path, queryStringParameters } = event;
 
+  // CORS preflight support
+  if (httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: defaultHeaders,
+      body: JSON.stringify({ ok: true }),
+    };
+  }
+
+  try {
     // ROTA GET ESPECÍFICA: /alunos-turma-completo?turmaId=...&media_aprovacao=...&nota_excelencia=...
     if (httpMethod === 'GET' && path && path.endsWith('/alunos-turma-completo')) {
       const qs = queryStringParameters || {};
@@ -42,9 +58,7 @@ exports.handler = async (event) => {
 
       return {
         statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: defaultHeaders,
         body: JSON.stringify(resultado),
       };
     }
@@ -59,9 +73,7 @@ exports.handler = async (event) => {
 
       return {
         statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: defaultHeaders,
         body: JSON.stringify(resultado),
       };
     }
@@ -76,9 +88,7 @@ exports.handler = async (event) => {
 
       return {
         statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: defaultHeaders,
         body: JSON.stringify(resultado),
       };
     }
@@ -92,9 +102,7 @@ exports.handler = async (event) => {
       console.log('✅ Retorno GET get_aulas_professor_detalhadas:', resultado);
       return {
         statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: defaultHeaders,
         body: JSON.stringify(resultado),
       };
     }
@@ -109,9 +117,7 @@ exports.handler = async (event) => {
 
       return {
         statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: defaultHeaders,
         body: JSON.stringify(resultado),
       };
     }
@@ -126,9 +132,7 @@ exports.handler = async (event) => {
 
       return {
         statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: defaultHeaders,
         body: JSON.stringify(resultado),
       };
     }
@@ -143,9 +147,7 @@ exports.handler = async (event) => {
 
       return {
         statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: defaultHeaders,
         body: JSON.stringify(resultado),
       };
     }
@@ -160,9 +162,7 @@ exports.handler = async (event) => {
 
       return {
         statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: defaultHeaders,
         body: JSON.stringify(resultado),
       };
     }
@@ -177,9 +177,7 @@ exports.handler = async (event) => {
 
       return {
         statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: defaultHeaders,
         body: JSON.stringify(resultado),
       };
     }
@@ -194,6 +192,7 @@ exports.handler = async (event) => {
     if (httpMethod && httpMethod !== 'POST') {
       return {
         statusCode: 405,
+        headers: defaultHeaders,
         body: JSON.stringify({ error: 'Método não permitido. Use POST.' }),
       };
     }
@@ -213,6 +212,7 @@ exports.handler = async (event) => {
     if (!acao || typeof acao !== 'string') {
       return {
         statusCode: 400,
+        headers: defaultHeaders,
         body: JSON.stringify({ error: 'Campo "acao" é obrigatório e deve ser uma string.' }),
       };
     }
@@ -222,6 +222,7 @@ exports.handler = async (event) => {
     if (!handlerFunc) {
       return {
         statusCode: 400,
+        headers: defaultHeaders,
         body: JSON.stringify({ error: `Ação inválida ou não suportada: ${acao}` }),
       };
     }
@@ -232,6 +233,7 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
+      headers: defaultHeaders,
       body: JSON.stringify(resultado),
     };
 
@@ -239,6 +241,7 @@ exports.handler = async (event) => {
     console.error('Erro na Lambda:', error);
     return {
       statusCode: 500,
+      headers: defaultHeaders,
       body: JSON.stringify({ error: 'Erro interno na Lambda.', detalhe: error.message }),
     };
   }

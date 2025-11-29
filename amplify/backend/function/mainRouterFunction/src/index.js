@@ -24,13 +24,39 @@ exports.handler = async (event) => {
   console.log('EVENT:', JSON.stringify(event));
 
   try {
-    // corpo vindo do API Gateway (ou do seu index.test.js)
-    const body = event.body ? JSON.parse(event.body) : {};
+    const { httpMethod, path, queryStringParameters } = event;
 
+    // ROTA GET ESPECÍFICA: /alunos-turma-completo?turmaId=...&media_aprovacao=...&nota_excelencia=...
+    if (httpMethod === 'GET' && path && path.endsWith('/alunos-turma-completo')) {
+      const qs = queryStringParameters || {};
+
+      const params = {
+        turmaId: qs.turmaId,
+        media_aprovacao: qs.media_aprovacao,
+        nota_excelencia: qs.nota_excelencia,
+      };
+
+      console.log('🔧 Router GET: Chamando getAlunosTurmaCompleto com params de query:', params);
+      const resultado = await getAlunosTurmaCompleto(params);
+      console.log('✅ Retorno GET get_alunos_turma_completo:', resultado);
+
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(resultado),
+      };
+    }
+
+    // --------------------
+    // FLUXO ORIGINAL (POST)
+    // --------------------
+    const body = event.body ? JSON.parse(event.body) : {};
     const { acao, params } = body;
 
-    // opcional: garantir que seja POST
-    if (event.httpMethod && event.httpMethod !== 'POST') {
+    // garantir que seja POST para o fluxo baseado em "acao"
+    if (httpMethod && httpMethod !== 'POST') {
       return {
         statusCode: 405,
         body: JSON.stringify({ error: 'Método não permitido. Use POST.' }),
@@ -48,7 +74,7 @@ exports.handler = async (event) => {
       inserir_presencas: inserirPresencas,
       inserir_registros_aulas: inserirRegistrosAulas,
 
-      // GETS
+      // GETS via POST (mantidos para compatibilidade)
       get_alunos_turma_completo: getAlunosTurmaCompleto,
       get_alunos_turma: getAlunosTurma,
       get_aulas_professor_detalhadas: getAulasProfessorDetalhadas,
@@ -76,7 +102,7 @@ exports.handler = async (event) => {
       };
     }
 
-    console.log(`🔧 Router: Chamando handler para ação "${acao}" com params:`, params);
+    console.log(`🔧 Router POST: Chamando handler para ação "${acao}" com params:`, params);
     const resultado = await handlerFunc(params);
     console.log(`✅ Retorno da ação "${acao}":`, resultado);
 

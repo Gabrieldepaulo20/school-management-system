@@ -33,3 +33,5 @@ async function getAlunosTurmaCompleto(data) {
     
     return retorno;
 }
+
+module.exports = { getAlunosTurmaCompleto };

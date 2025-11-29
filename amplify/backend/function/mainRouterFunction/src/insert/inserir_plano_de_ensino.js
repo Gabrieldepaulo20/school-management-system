@@ -35,7 +35,7 @@ async function inserirPlanoDeEnsino(planoDeEnsino) {
     p_avaliacao: avaliacao,
     p_recursosnecessarios: recursosNecessarios,
     p_fk_turmas: fkTurmas,
-    p_conteudos_ids: Array.isArray(conteudosIds) && conteudosIds.length > 0 ? conteudosIds : null,
+    p_conteudos_ids: Array.isArray(conteudosIds) && conteudosIds.length > 0 ? conteudosIds : null
   };
 
   console.log('🔧 Chamando RPC inserir_plano_de_ensino com params (objeto):', payload);

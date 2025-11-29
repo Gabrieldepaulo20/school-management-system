@@ -82,6 +82,40 @@ exports.handler = async (event) => {
       };
     }
 
+    // rota GET para avaliacoes
+    if (httpMethod === 'GET' && path && path.endsWith('/avaliacoes')) {
+      const qs = queryStringParameters || {};
+
+      console.log('🔧 Router GET: Chamando getAvaliacoes com params de query:', qs);
+      const resultado = await getAvaliacoes(qs);
+      console.log('✅ Retorno GET get_avaliacoes:', resultado);
+
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(resultado),
+      };
+    }
+
+    // rota GET para conteudos_prog
+    if (httpMethod === 'GET' && path && path.endsWith('/conteudos-prog')) {
+      const qs = queryStringParameters || {};
+
+      console.log('🔧 Router GET: Chamando getConteudosProg com params de query:', qs);
+      const resultado = await getConteudosProg(qs);
+      console.log('✅ Retorno GET get_conteudos_prog:', resultado);
+
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(resultado),
+      };
+    }
+
     // --------------------
     // FLUXO ORIGINAL (POST)
     // --------------------
@@ -110,8 +144,6 @@ exports.handler = async (event) => {
       // GETS via POST (mantidos para compatibilidade)
       get_alunos_turma: getAlunosTurma,
       get_aulas_professor_detalhadas: getAulasProfessorDetalhadas,
-      get_avaliacoes: getAvaliacoes,
-      get_conteudos_prog: getConteudosProg,
       get_dashboard_professor: getDashboardProfessor,
       get_planos_ensino: getPlanosEnsino,
       get_registros_aulas: getRegistrosAulas,

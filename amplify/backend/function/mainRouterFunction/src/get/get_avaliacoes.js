@@ -14,7 +14,7 @@ async function getAvaliacoes(data){
     const payload =
     {
         p_idturma: Number(idTurma),
-        p_idprofessor: Number(idProfessor)
+        p_idprofessor: idProfessor
     }
     console.log("🔧 Chamando RPC get_avaliacoes com params:", payload);
 
@@ -29,3 +29,5 @@ async function getAvaliacoes(data){
     
     return retorno;
 }
+
+module.exports = { getAvaliacoes };

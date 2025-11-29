@@ -175,10 +175,10 @@ async function inserirAvaliacao(body) {
       nomeAluno,        // opcional, apenas para logs
       disciplinaId,     // ID numérico da disciplina vindo do front
       fase,
-      urlAnexo,         // base64 do anexo vindo do front
-      nomeProfessor,
-      nomeArquivo,
-      tipoArquivo,
+      urlAnexo,         // base64 do anexo vindo do front (opcional)
+      nomeProfessor,    // opcional, só usado para organização no S3
+      nomeArquivo,      // opcional, será gerado se não vier
+      tipoArquivo,      // opcional, será inferido se não vier
     } = body;
 
     console.log("👦 [inserirAvaliacao] Dados do aluno recebidos no body:", {
@@ -238,11 +238,13 @@ async function inserirAvaliacao(body) {
     const fkTurmasFinal = aluno.fk_turmas;
 
     // ==========================
-    // UPLOAD S3 (se tiver anexo)
+    // UPLOAD S3 (se tiver anexo - opcional)
     // ==========================
     let urlAnexoFinal = null;
 
-    if (urlAnexo) {
+    const temAnexo = typeof urlAnexo === "string" && urlAnexo.trim() !== "";
+
+    if (temAnexo) {
       console.log("📤 [inserirAvaliacao] Enviando anexo para S3...");
 
       const turmaNomeFinal = nomeTurma || `turma-${fkTurmasFinal}`;
@@ -263,22 +265,34 @@ async function inserirAvaliacao(body) {
         tipoArquivoFinal,
       });
 
-      const uploadResult = await uploadAnexoGenerico({
-        prefixo: "avaliacoes/",
-        turmaId: fkTurmasFinal,
-        turmaNome: turmaNomeFinal,
-        professorNome: professorNomeFinal,
-        dataReferencia: dataNormalizada,
-        nomeArquivo: nomeArquivoFinal,
-        tipo: tipoArquivoFinal,
-        conteudoBase64: urlAnexo,
-      });
+      try {
+        const uploadResult = await uploadAnexoGenerico({
+          prefixo: "avaliacoes/",
+          turmaId: fkTurmasFinal,
+          turmaNome: turmaNomeFinal,
+          professorNome: professorNomeFinal,
+          dataReferencia: dataNormalizada,
+          nomeArquivo: nomeArquivoFinal,
+          tipo: tipoArquivoFinal,
+          conteudoBase64: urlAnexo,
+        });
 
-      console.log("📦 [inserirAvaliacao] Retorno S3:", uploadResult);
+        console.log("📦 [inserirAvaliacao] Retorno S3:", uploadResult);
+        urlAnexoFinal = uploadResult?.url || null;
 
-      urlAnexoFinal = uploadResult?.url || null;
+        if (!urlAnexoFinal) {
+          throw new Error("Upload do anexo concluído, mas URL de retorno é inválida ou ausente.");
+        }
+      } catch (errUpload) {
+        console.error("❌ [inserirAvaliacao] Falha ao enviar anexo para S3. A avaliação não será inserida.", errUpload);
+
+        // Propaga um erro claro para o front, sem inserir a avaliação
+        const mensagemBase = "Erro ao enviar o anexo da avaliação. Verifique se o arquivo é um PDF ou DOCX válido (base64) e tente novamente.";
+        const detalhe = errUpload && errUpload.message ? ` Detalhe técnico: ${errUpload.message}` : "";
+        throw new Error(mensagemBase + detalhe);
+      }
     } else {
-      console.log("ℹ️ [inserirAvaliacao] Nenhum anexo enviado (urlAnexo vazio ou null).");
+      console.log("ℹ️ [inserirAvaliacao] Nenhum anexo enviado (urlAnexo ausente, vazio ou null).");
     }
 
     // ==========================

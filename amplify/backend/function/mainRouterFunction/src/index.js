@@ -49,6 +49,23 @@ exports.handler = async (event) => {
       };
     }
 
+    // ROTA GET ESPECÍFICA: /alunos-turma?...
+    if (httpMethod === 'GET' && path && path.endsWith('/alunos-turma')) {
+      const qs = queryStringParameters || {};
+
+      console.log('🔧 Router GET: Chamando getAlunosTurma com params de query:', qs);
+      const resultado = await getAlunosTurma(qs);
+      console.log('✅ Retorno GET get_alunos_turma:', resultado);
+
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(resultado),
+      };
+    }
+
     // ROTA GET ESPECÍFICA: /turmas?...
     if (httpMethod === 'GET' && path && path.endsWith('/turmas')) {
       const qs = queryStringParameters || {};
@@ -116,6 +133,57 @@ exports.handler = async (event) => {
       };
     }
 
+    // rota GET para dashboard_professor
+    if (httpMethod === 'GET' && path && path.endsWith('/dashboard-professor')) {
+      const qs = queryStringParameters || {};
+
+      console.log('🔧 Router GET: Chamando getDashboardProfessor com params de query:', qs);
+      const resultado = await getDashboardProfessor(qs);
+      console.log('✅ Retorno GET get_dashboard_professor:', resultado);
+
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(resultado),
+      };
+    }
+
+    // rota GET para planos_ensino
+    if (httpMethod === 'GET' && path && path.endsWith('/planos-ensino')) {
+      const qs = queryStringParameters || {};
+
+      console.log('🔧 Router GET: Chamando getPlanosEnsino com params de query:', qs);
+      const resultado = await getPlanosEnsino(qs);
+      console.log('✅ Retorno GET get_planos_ensino:', resultado);
+
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(resultado),
+      };
+    }
+
+    // rota GET para registros_aulas
+    if (httpMethod === 'GET' && path && path.endsWith('/registros-aulas')) {
+      const qs = queryStringParameters || {};
+
+      console.log('🔧 Router GET: Chamando getRegistrosAulas com params de query:', qs);
+      const resultado = await getRegistrosAulas(qs);
+      console.log('✅ Retorno GET get_registros_aulas:', resultado);
+
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(resultado),
+      };
+    }
+
     // --------------------
     // FLUXO ORIGINAL (POST)
     // --------------------
@@ -140,13 +208,6 @@ exports.handler = async (event) => {
       inserir_conteudos_do_plano: inserirConteudosDoPlano,
       inserir_presencas: inserirPresencas,
       inserir_registros_aulas: inserirRegistrosAulas,
-
-      // GETS via POST (mantidos para compatibilidade)
-      get_alunos_turma: getAlunosTurma,
-      get_aulas_professor_detalhadas: getAulasProfessorDetalhadas,
-      get_dashboard_professor: getDashboardProfessor,
-      get_planos_ensino: getPlanosEnsino,
-      get_registros_aulas: getRegistrosAulas,
     };
 
     if (!acao || typeof acao !== 'string') {

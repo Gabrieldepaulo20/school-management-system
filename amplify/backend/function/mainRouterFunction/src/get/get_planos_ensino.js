@@ -11,7 +11,7 @@ async function getPlanosEnsino(data){
     
     const payload =
     {
-        p_idturma: Number(idTurma)
+        p_idturma: idTurma
     }
     console.log("🔧 Chamando RPC get_planos_ensino com params:", payload);
     const {data: retorno, error} = await supabase.rpc("get_planos_ensino", payload);

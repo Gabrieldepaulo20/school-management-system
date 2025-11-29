@@ -13,7 +13,7 @@ async function getRegistrosAulas(data){
     const payload =
     {
         p_idturmas: Number(idTurma),
-        p_idprofessor: Number(idProfessor)
+        p_idprofessor: idProfessor
     }
     console.log("🔧 Chamando RPC get_registros_aulas com params:", payload);
     const {data: retorno, error} = await supabase.rpc("get_registros_aulas", payload);

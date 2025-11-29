@@ -10,7 +10,7 @@ async function getDashboardProfessor(data){
     }
 
     const payload = {
-        p_idprofessor: Number(idProfessor)
+        p_idprofessor: idProfessor
     };
     console.log("🔧 Chamando RPC get_dashboard_professor com params:", payload);
 

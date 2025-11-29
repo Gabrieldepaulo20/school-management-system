@@ -9,7 +9,7 @@ async function getTurmas(data){
     
     const payload =
     {
-        p_idprofessor: Number(idProfessor)
+        p_idprofessor: idProfessor
     }
     console.log("🔧 Chamando RPC get_turmas com params:", payload);
     const {data: retorno, error} = await supabase.rpc("get_turmas", payload);

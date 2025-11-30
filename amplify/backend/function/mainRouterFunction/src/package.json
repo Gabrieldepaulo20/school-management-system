@@ -8,6 +8,7 @@
     "@types/aws-lambda": "^8.10.92"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.940.0",
     "@aws-sdk/client-s3": "^3.932.0",
     "@supabase/supabase-js": "^2.81.1",
     "dotenv": "^17.2.3"

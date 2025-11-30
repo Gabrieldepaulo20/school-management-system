@@ -17,6 +17,8 @@ const { getPlanosEnsino } = require('./get/get_planos_ensino');
 const { getRegistrosAulas } = require('./get/get_registros_aulas');
 const { getTurmas } = require('./get/get_turmas');
 const { handler: signupUserHandler } = require('./auth/signupUser');
+const { handler: loginUserHandler } = require('./auth/loginUser');
+const { handler: refreshTokenHandler } = require('./auth/refreshToken');
 
 const defaultHeaders = {
   'Content-Type': 'application/json',
@@ -29,9 +31,10 @@ const defaultHeaders = {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  console.log('EVENT:', JSON.stringify(event));
+  console.log('📥 EVENT RAW:', JSON.stringify(event));
 
   const { httpMethod, path, queryStringParameters } = event;
+  console.log('🔎 REQUEST INFO:', { httpMethod, path, queryStringParameters });
 
   // CORS preflight support
   if (httpMethod === 'OPTIONS') {
@@ -53,6 +56,55 @@ exports.handler = async (event) => {
         body: resultado.body || JSON.stringify({ ok: true }),
       };
     }
+
+    // ROTA POST ESPECÍFICA: /auth/login
+    if (httpMethod === 'POST' && path && path.endsWith('/auth/login')) {
+      console.log('🔐 Router POST: Chamando loginUserHandler para /auth/login');
+      try {
+        const resultado = await loginUserHandler(event);
+        console.log('✅ Retorno loginUserHandler:', resultado);
+        return {
+          statusCode: resultado.statusCode || 200,
+          headers: { ...defaultHeaders, ...(resultado.headers || {}) },
+          body: resultado.body || JSON.stringify({ ok: true }),
+        };
+      } catch (err) {
+        console.error('❌ Erro ao executar loginUserHandler:', err);
+        return {
+          statusCode: 500,
+          headers: defaultHeaders,
+          body: JSON.stringify({
+            error: 'Erro interno ao realizar login.',
+            detalhe: err.message,
+          }),
+        };
+      }
+    }
+
+    // ROTA POST ESPECÍFICA: /auth/refresh
+    if (httpMethod === 'POST' && path && path.endsWith('/auth/refresh')) {
+      console.log('🔐 Router POST: Chamando refreshTokenHandler para /auth/refresh');
+      try {
+        const resultado = await refreshTokenHandler(event);
+        console.log('✅ Retorno refreshTokenHandler:', resultado);
+        return {
+          statusCode: resultado.statusCode || 200,
+          headers: { ...defaultHeaders, ...(resultado.headers || {}) },
+          body: resultado.body || JSON.stringify({ ok: true }),
+        };
+      } catch (err) {
+        console.error('❌ Erro ao executar refreshTokenHandler:', err);
+        return {
+          statusCode: 500,
+          headers: defaultHeaders,
+          body: JSON.stringify({
+            error: 'Erro interno ao renovar token.',
+            detalhe: err.message,
+          }),
+        };
+      }
+    }
+
     // ROTA GET ESPECÍFICA: /alunos-turma-completo?turmaId=...&media_aprovacao=...&nota_excelencia=...
     if (httpMethod === 'GET' && path && path.endsWith('/alunos-turma-completo')) {
       const qs = queryStringParameters || {};
@@ -213,6 +265,7 @@ exports.handler = async (event) => {
 
     // garantir que seja POST para o fluxo baseado em "acao"
     if (httpMethod && httpMethod !== 'POST') {
+      console.warn('⚠️ Método não permitido no fluxo baseado em "acao":', { httpMethod, path });
       return {
         statusCode: 405,
         headers: defaultHeaders,
@@ -236,6 +289,7 @@ exports.handler = async (event) => {
     };
 
     if (!acao || typeof acao !== 'string') {
+      console.error('❌ Campo "acao" ausente ou inválido no body:', rawBody);
       return {
         statusCode: 400,
         headers: defaultHeaders,
@@ -246,6 +300,7 @@ exports.handler = async (event) => {
     const handlerFunc = actionsMap[acao];
 
     if (!handlerFunc) {
+      console.error('❌ Ação inválida ou não suportada:', acao);
       return {
         statusCode: 400,
         headers: defaultHeaders,
@@ -264,11 +319,19 @@ exports.handler = async (event) => {
     };
 
   } catch (error) {
-    console.error('Erro na Lambda:', error);
+    console.error('💥 Erro na Lambda (global catch):', {
+      message: error.message,
+      stack: error.stack,
+      httpMethod,
+      path,
+    });
     return {
       statusCode: 500,
       headers: defaultHeaders,
-      body: JSON.stringify({ error: 'Erro interno na Lambda.', detalhe: error.message }),
+      body: JSON.stringify({
+        error: 'Erro interno na Lambda.',
+        detalhe: error.message,
+      }),
     };
   }
 };

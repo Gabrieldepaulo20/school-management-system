@@ -1,27 +1,21 @@
-require("dotenv").config();
-const { inserirPresencas } = require("./insert/inserir_presencas");
-const { supabase } = require("./bd/connectionBD");
+const { handler } = require('./index');
 
-async function testar() {
-  const payload = {
-    data: "29/11/2025",
-    presente: true,
-    fkAlunos: "0222945a-81a6-4c1e-9647-d57b9f336c41",
-    fkAulas: 3
+async function testarRefresh() {
+  const event = {
+    httpMethod: 'POST',
+    path: '/auth/refresh',
+    headers: { 'Content-Type': 'application/json' },
+    queryStringParameters: null,
+    body: JSON.stringify({
+      refreshToken: 'SEU_REFRESH_TOKEN_AQUI',
+    }),
   };
 
-  try {
-    console.log("=== Chamando inserir_presencas diretamente ===");
-    console.log(payload);
-
-    const res = await inserirPresencas(payload);
-
-    console.log("\n=== RESPOSTA DA FUNÇÃO ===");
-    console.log(res);
-  } catch (err) {
-    console.error("\n🔥 ERRO AO EXECUTAR inserir_presencas ===");
-    console.error(err);
-  }
+  const resp = await handler(event);
+  console.log('===== RESPOSTA REFRESH =====');
+  console.log('StatusCode:', resp.statusCode);
+  console.log('Body:', resp.body);
+  console.log('============================');
 }
 
-testar();
+testarRefresh();

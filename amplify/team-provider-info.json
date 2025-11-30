@@ -15,9 +15,11 @@
       "function": {
         "mainRouterFunction": {
           "deploymentBucketName": "amplify-diariodeclasse-dev-b5035-deployment",
-          "s3Key": "amplify-builds/mainRouterFunction-644f2b5266444b4a7278-build.zip",
+          "s3Key": "amplify-builds/mainRouterFunction-31337157354457346b5a-build.zip",
           "supabaseUrl": "https://ggfcsbaqkafrtooxffrb.supabase.co",
-          "supabaseServiceRoleKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdnZmNzYmFxa2FmcnRvb3hmZnJiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTYwODY5NiwiZXhwIjoyMDc3MTg0Njk2fQ.nUI7FATESBnLHJY5RGHbzNkwErPJbL1WcIw6EeQBOiA"
+          "supabaseServiceRoleKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdnZmNzYmFxa2FmcnRvb3hmZnJiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTYwODY5NiwiZXhwIjoyMDc3MTg0Njk2fQ.nUI7FATESBnLHJY5RGHbzNkwErPJbL1WcIw6EeQBOiA",
+          "cognitoUserPoolId": "us-east-1_LGuutoM0T",
+          "cognitoAppClientId": "2pfveal24n00uhptuo4l211qk7"
         }
       },
       "api": {

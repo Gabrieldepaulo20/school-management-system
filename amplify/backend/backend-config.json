@@ -49,6 +49,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_mainRouterFunction_cognitoAppClientId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "mainRouterFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_mainRouterFunction_cognitoUserPoolId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "mainRouterFunction"
+        }
+      ]
+    },
     "AMPLIFY_function_mainRouterFunction_deploymentBucketName": {
       "usedBy": [
         {

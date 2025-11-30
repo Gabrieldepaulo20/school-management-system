@@ -21,6 +21,12 @@
     },
     "supabaseServiceRoleKey": {
       "Type": "String"
+    },
+    "cognitoUserPoolId": {
+      "Type": "String"
+    },
+    "cognitoAppClientId": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -81,6 +87,12 @@
             },
             "SUPABASE_SERVICE_ROLE_KEY": {
               "Ref": "supabaseServiceRoleKey"
+            },
+            "COGNITO_USER_POOL_ID": {
+              "Ref": "cognitoUserPoolId"
+            },
+            "COGNITO_APP_CLIENT_ID": {
+              "Ref": "cognitoAppClientId"
             }
           }
         },

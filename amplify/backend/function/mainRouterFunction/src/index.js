@@ -16,6 +16,7 @@ const { getDashboardProfessor } = require('./get/get_dashboard_professor');
 const { getPlanosEnsino } = require('./get/get_planos_ensino');
 const { getRegistrosAulas } = require('./get/get_registros_aulas');
 const { getTurmas } = require('./get/get_turmas');
+const { handler: signupUserHandler } = require('./auth/signupUser');
 
 const defaultHeaders = {
   'Content-Type': 'application/json',
@@ -42,6 +43,16 @@ exports.handler = async (event) => {
   }
 
   try {
+    // ROTA POST ESPECÍFICA: /auth/signup
+    if (httpMethod === 'POST' && path && path.endsWith('/auth/signup')) {
+      console.log('🔐 Router POST: Chamando signupUserHandler para /auth/signup');
+      const resultado = await signupUserHandler(event);
+      return {
+        statusCode: resultado.statusCode || 200,
+        headers: { ...defaultHeaders, ...(resultado.headers || {}) },
+        body: resultado.body || JSON.stringify({ ok: true }),
+      };
+    }
     // ROTA GET ESPECÍFICA: /alunos-turma-completo?turmaId=...&media_aprovacao=...&nota_excelencia=...
     if (httpMethod === 'GET' && path && path.endsWith('/alunos-turma-completo')) {
       const qs = queryStringParameters || {};
@@ -208,6 +219,9 @@ exports.handler = async (event) => {
         body: JSON.stringify({ error: 'Método não permitido. Use POST.' }),
       };
     }
+
+
+
 
     // mapa de ações para funções handler
     const actionsMap = {

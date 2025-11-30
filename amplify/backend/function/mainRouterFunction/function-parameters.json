@@ -8,6 +8,14 @@
     {
       "cloudFormationParameterName": "supabaseServiceRoleKey",
       "environmentVariableName": "SUPABASE_SERVICE_ROLE_KEY"
+    },
+    {
+      "cloudFormationParameterName": "cognitoUserPoolId",
+      "environmentVariableName": "COGNITO_USER_POOL_ID"
+    },
+    {
+      "cloudFormationParameterName": "cognitoAppClientId",
+      "environmentVariableName": "COGNITO_APP_CLIENT_ID"
     }
   ]
 }

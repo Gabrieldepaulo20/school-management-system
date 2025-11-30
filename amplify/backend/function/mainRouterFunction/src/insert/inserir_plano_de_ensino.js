@@ -1,5 +1,5 @@
 const { supabase } = require('../bd/connectionBD');
-const { uploadAnexoGenerico } = require('../s3/uploadGenerico'); // ajuste o path conforme sua estrutura
+const { uploadAnexoGenerico } = require('./anexosS3');
 
 async function inserirPlanoDeEnsino(planoDeEnsino) {
   console.log('📥 inserirPlanoDeEnsino recebeu:', planoDeEnsino);

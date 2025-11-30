@@ -140,6 +140,7 @@ exports.handler = async (event) => {
         .from("professores")
         .insert({
           fk_usuarios: usuario.idUsuarios,
+          idProfessores: usuario.idUsuarios, // mesmo id de usuarios
         });
 
       if (erroProfessor) {
